@@ -7,3 +7,6 @@ class Config:
     MAIL_USE_TLS = True
     MAIL_USERNAME = 'bim11-15@hotmail.com'
     MAIL_PASSWORD = ''
+
+
+    SQLALCHEMY_TRACK_MODIFICATIONS = False

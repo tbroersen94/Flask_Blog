@@ -4,13 +4,9 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
-
-
     {% if title %}
         <title>Flask Blog - {{ title }}</title>
     {% else %}
@@ -29,13 +25,23 @@
             <div class="navbar-nav mr-auto">
               <a class="nav-item nav-link" href="{{ url_for('main.home') }}">Home</a>
               <a class="nav-item nav-link" href="{{ url_for('main.about') }}">About</a>
+              {% if current_user.is_authenticated %}
+                <a class="nav-item nav-link" href="{{ url_for('main.chat') }}">Chatbox</a>
+              {% endif %}  
+            </div>
+            <div class="navbar-nav" style='width:33%'>
+              {% if current_user.is_authenticated %}
+              <a class="font-weight-bold" style="font-size:24px;">{{ current_user.username }}</a>
+              {% endif %}  
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
                 {% if current_user.is_authenticated %}
+                      
                     <a class="nav-item nav-link" href="{{ url_for('posts.new_post') }}">New Post</a>
                     <a class="nav-item nav-link" href="{{ url_for('users.account') }}">Account</a>
                     <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
+                    
                 {% else %}
                     <a class="nav-item nav-link" href="{{ url_for('users.login') }}">Login</a>
                     <a class="nav-item nav-link" href="{{ url_for('users.register') }}">Register</a>
@@ -69,11 +75,10 @@
                 <li class="list-group-item list-group-item-light">Calendars</li>
                 <li class="list-group-item list-group-item-light">etc</li>
               </ul>
-          </div>
+          </div>       
         </div>
       </div>
     </main>
-
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

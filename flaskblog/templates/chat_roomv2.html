@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<body>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <!--meta http-equiv="X-UA-Compatible" content="IE=edge"-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->   
+    <style>
+      div.msg_bbl {
+        background-color: #ddd;
+        padding: 5px 10px;
+        border-radius: 10px;
+        color: #555;
+        margin-bottom: 5px;
+      }
+
+    </style>
+    
+    <div class="text-center well"><h1>Message in a box </h1></div>
+    <div class="clearfix" style="margin-top: 25px;"></div>
+    <div class="article-metadata"><b>Super Chat</b></div>
+    
+    <div class="content-section" style='height: 60%'>
+        <div class="col-sm-8">
+            <h2 style='color: #ccc; text-align: bottom;'>No message yet..</h2>
+            <div class="message_holder"></div>
+        </div>
+    </div>
+
+    <b class="text-left">Type your message below <span class="glyphicon glyphicon-arrow-down"></span></b>
+    <div class="col-sm-8">
+        
+        <form action="" method="POST">
+            
+            <div class="clearfix" style="margin-top: 20px;"></div>
+                <b class="text-left">Type your message below <span class="glyphicon glyphicon-arrow-down"></span></b>
+            <div class="clearfix" style="margin-top: 20px;"></div>
+            <!--label><h3>{{ user }}</h3></label-->
+            <div class="clearfix" style="margin-top: 5px;"></div>
+            <input type="text" class="message form-control input-lg" placeholder="Message">
+            <div style="padding-top: 5px;"></div>
+            <button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-send"></span>Send</button>
+        </form>
+    </div>
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>    
+    <script type="text/javascript">
+        
+        var socket = io.connect('http://0.0.0.0:5000')
+        // broadcast a message
+        
+        socket.on('connect', function() {
+        
+            socket.emit('sendMessage', {
+            data: 'Gebruiker is verbonden'
+            });
+            
+            var form = $('form').on('submit', function(e){
+                e.preventDefault()
+
+                // document.getElementById("myModalLabel").innerHTML
+                //let user_name = $('input.username').val()
+                let user_name = "{{ user }}"
+                let user_input = $('input.message').val()
+                //let user_name = document.getElementById("username").value
+                    
+                    socket.emit('sendMessage', {
+                        user_name : user_name,
+                        message : user_input
+                    })
+                    
+                // empty the input field
+                $( 'input.message' ).val( '' ).focus()
+            })       
+        })
+        // capture message
+        socket.on('response', function(msg) {
+            console.log(msg)
+            if( typeof msg.user_name !== 'undefined' ) {
+                $('h2').remove()
+                $('div.message_holder').append('<div class="msg_bbl"><b style="color: #000">'+msg.user_name+'</b> '+msg.message+'</div>' )
+                }
+        })
+    </script>
+    
+</body>
+
+{% endblock content %} 
+

@@ -1,8 +1,8 @@
 from flask import render_template, request, Blueprint
 from flaskblog.models import Post
+from flask_login import login_required, current_user
 
 main = Blueprint('main', __name__)
-
 
 @main.route("/")
 @main.route("/home")
@@ -15,3 +15,12 @@ def home():
 @main.route("/about")
 def about():
     return render_template('about.html', title='About')
+
+
+@main.route("/chat")
+@login_required
+def chat():
+    user = current_user.username
+    print('this is it', user)
+    return render_template('chat_roomv2.html', user=user)
+
