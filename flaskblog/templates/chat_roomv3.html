@@ -28,31 +28,31 @@
       }
     </style>
   
-    <div class="text-center well"><h1>Message in the box </h1></div>
-    <div class="clearfix" style="margin-top: 25px;"></div>
-    <div class="article-metadata"><b>Super Chat</b></div>
-    <div class="clearfix" style="margin-top: 20px;"></div>
+        <div class="text-center well"><h1>Message in the box </h1></div>
+        <div class="clearfix" style="margin-top: 25px;"></div>
+        <div class="article-metadata"><b>Super Chat</b></div>
+        <div class="clearfix" style="margin-top: 20px;"></div>
 
-    <div class="col-md-12">
-        <div class="panel panel-info">
-            <div class="panel-heading">
-                <strong><span class="glyphicon glyphicon-list"></span> Chat History</strong>
-            </div>
-            <div id="fixed-panel" class="panel-body fixed-panel" style="max-height: 10;overflow-y: scroll;" >
-                <ul class="media-list">
-                </ul>
-            </div>
-            <div class="panel-footer">
-                <div class="input-group">
-                    <!--input type="text" class="form-control" placeholder="Enter Message" id="messageText" autofocus/-->
-                    <input type="text" class="message form-control input-lg" placeholder="Message" id="messageText" autocomplete="off">
-                    <span class="input-group-btn">     
-                        <button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-send"></span>Send</button>
-                    </span>
+        <div class="col-md-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <strong><span class="glyphicon glyphicon-list"></span> Chat History</strong>
+                </div>
+                <div id="fixed-panel" class="panel-body fixed-panel" style="max-height: 10;overflow-y: scroll;" >
+                    <ul class="media-list">
+                    </ul>
+                </div>
+                <div class="panel-footer">
+                    <div class="input-group">
+                        <!--input type="text" class="form-control" placeholder="Enter Message" id="messageText" autofocus/-->
+                        <input type="text" class="message form-control input-lg" placeholder="Message" id="messageText" autocomplete="off">
+                        <span class="input-group-btn">     
+                            <button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-send"></span>Send</button>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -62,12 +62,13 @@
         var socket = io.connect('http://0.0.0.0:5000')
         // broadcast a message
         
+
         socket.on('connect', function() {
 
             socket.emit('sendMessage', {
-            data: '{{ user }} is connected'
+            data: 'User is connected'
             });
-
+            
             var form = $('form').on('submit', function(e){
                 e.preventDefault()
 
@@ -87,10 +88,10 @@
                 $( 'input.message' ).val( '' ).focus()
                 
             })       
-            })
+        })
 
-            // capture message
-            socket.on('response', function(msg) {
+        // capture message
+        socket.on('response', function(msg) {
             console.log(msg)
             if( typeof msg.user_name !== 'undefined' ) {
                 //$('h2').remove()
@@ -99,9 +100,9 @@
                 setTimeout(updateChat(), 1000);
                 //$('.fixed-panel').stop().animate({ scrollTop: $('.fixed-panel')[0].scrollHeight}, 1000);
                 }
-            })
+        })
 
-            function updateChat() {
+        function updateChat() {
             var height = document.getElementById('fixed-panel').scrollHeight; - $('#fixed-panel').height(); 
             $('#fixed-panel').scrollTop(height);}
 
